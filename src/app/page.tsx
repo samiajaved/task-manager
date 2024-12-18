@@ -2,14 +2,18 @@
 import { useState, useRef } from "react";
 import { nanoid } from "nanoid";
 import Image from "next/image";
+interface Task{
+  title:string;
+  id:string;
+}
 
 export default function Home() {
   
-  const [tasks, setTasks] = useState([]); //initialize state for task
+  const [tasks, setTasks] = useState<Task[]>([]); //initialize state for task
   const inputReference = useRef(null);      //reference for the input field
 
   const HandleAddTask = () => {
-    const inputValue = inputReference?.current?.value as string;
+    const inputValue = inputReference?.current?.value || "";
     setTasks([{ title: inputValue, id: nanoid() }, ...tasks]);
 
     if (inputReference.current) {  //clear the input field after pressing enter
@@ -17,12 +21,12 @@ export default function Home() {
     }
   };
 
-  const HandleKeyPress = (event: React.KeyboardEvent) => { //add task by pressing enter
+  const HandleKeyPress = (event: React.KeyboardEvent<HTMLDivElement>) => { //add task by pressing enter
     if (event.key === "Enter")
       HandleAddTask();
   };
 
-  const HandleScrollPage = (event: React.KeyboardEvent) => { //handle scrolling
+  const HandleScrollPage = (event: React.KeyboardEvent<HTMLDivElement>) => { //handle scrolling
     if (event.key === "Lower Key")
       Home();
   };
